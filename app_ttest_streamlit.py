@@ -5,14 +5,13 @@ import scipy.stats as stats
 import platform
 import matplotlib
 import matplotlib.pyplot as plt
-def ensure_korean_font():
-    from matplotlib import font_manager as fm
-    fm.fontManager.addfont("fonts/NanumGothic.ttf")    
     
 st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
 # --- 최소 보강: 설치된 한글 폰트 자동 감지 (기존 분기 유지 + 폴백) ---
 def ensure_korean_font():
+    from matplotlib import font_manager as fm
+    fm.fontManager.addfont("fonts/NanumGothic.ttf")
     # 1) 기존 OS별 기본 후보
     if platform.system() == "Windows":
         primary = "Malgun Gothic"
