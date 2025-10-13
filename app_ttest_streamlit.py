@@ -251,7 +251,6 @@ if show_plots:
                 font_name = fm.FontProperties(fname=str(font_path)).get_name()
                 plt.rcParams['font.family'] = font_name
                 font_loaded = True
-                st.success(f"폰트 로드 성공: {font_path.name}")
                 break
             except Exception:
                 pass
