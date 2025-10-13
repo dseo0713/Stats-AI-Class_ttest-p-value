@@ -6,3 +6,4 @@ statsmodels>=0.14
 matplotlib>=3.7
 openpyxl>=3.1   # 엑셀(xlsx) 읽을 때 필요
 xlrd>=2.0       # (xls를 읽는다면)
+koreanize-matplotlib
