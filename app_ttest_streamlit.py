@@ -3,8 +3,15 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import platform
-import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib
+import matplotlib.font_manager as fm
+
+# ===== [ 여기에 폰트 설정 코드 추가 ] =====
+FONT_PATH = "assets/fonts/NanumGothic.ttf"   # 폰트 파일 경로 (레포 안에 넣은 폴더)
+fm.fontManager.addfont(FONT_PATH)
+matplotlib.rcParams["font.family"] = "NanumGothic"
+matplotlib.rcParams["axes.unicode_minus"] = False
 
 st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
