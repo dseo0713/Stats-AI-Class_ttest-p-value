@@ -231,8 +231,10 @@ st.markdown(report, unsafe_allow_html=True)
 if show_plots:
     st.subheader("5) 요약 그래프")
 
-# 그래프 그리기 직전에 폰트 재설정
+ # 그래프 그리기 직전에 폰트 재설정 + 캐시 강제 갱신
+    from matplotlib import font_manager as fm
     ensure_korean_font()
+    plt.rcParams['font.family'] = matplotlib.rcParams['font.family']
     
     fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
 
