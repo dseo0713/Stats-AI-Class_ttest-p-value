@@ -9,32 +9,38 @@ from pathlib import Path
     
 st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
-from matplotlib import font_manager as fm
-from pathlib import Path
+# --- 폰트 설정: 함수로 캡슐화 (전역에 primary/candidates 남기지 않기) ---
+def ensure_korean_font():
+    from matplotlib import font_manager as fm
+    from pathlib import Path
+    import platform
+    import matplotlib
 
-# 폰트 파일 탐색: fonts/ 또는 레포 루트에 있으면 자동 등록
-base = Path(__file__).resolve().parent
-font_paths = [
-    base / "fonts" / "NanumGothic.ttf",
-    base / "NanumGothic.ttf",
-    base / "fonts" / "NotoSansKR-Regular.otf",
-    base / "NotoSansKR-Regular.otf",
-]
+    # 1) 레포 내 폰트 파일(있으면) 등록 시도
+    base = Path(__file__).resolve().parent
+    font_paths = [
+        base / "fonts" / "NanumGothic.ttf",
+        base / "NanumGothic.ttf",
+        base / "fonts" / "NotoSansKR-Regular.otf",
+        base / "NotoSansKR-Regular.otf",
+    ]
+    for p in font_paths:
+        if p.exists() and p.suffix.lower() in {".ttf", ".otf", ".ttc"} and p.stat().st_size > 10_000:
+            try:
+                fm.fontManager.addfont(str(p))
+                break
+            except Exception:
+                pass  # 손상/비정상 파일은 스킵
 
-added = False
-for p in font_paths:
-    if p.exists() and p.suffix.lower() in {".ttf", ".otf", ".ttc"} and p.stat().st_size > 10_000:
-        try:
-            fm.fontManager.addfont(str(p))
-            added = True
-            break
-        except Exception:
-            # 손상/비정상 파일은 스킵
-            pass
-# added=False여도 이후 OS별 후보/설치 폰트 탐색 로직으로 계속 진행
+    # 2) OS별 기본 후보
+    if platform.system() == "Windows":
+        primary = "Malgun Gothic"
+    elif platform.system() == "Darwin":
+        primary = "AppleGothic"
+    else:
+        primary = "NanumGothic"
 
-
-    # 2) 보조 후보 목록 (설치 환경별 차이를 흡수)
+    # 3) 설치된 폰트 중에서 한글 지원 후보 탐색
     candidates = [
         primary,
         "NanumGothic",
@@ -53,7 +59,6 @@ for p in font_paths:
             matplotlib.rcParams["font.family"] = name
             break
     else:
-        # 최후의 보루(영문 기본) — 한글 미지원일 수 있으나 그대로 둠
         matplotlib.rcParams["font.family"] = matplotlib.rcParams.get("font.family", "DejaVu Sans")
 
     matplotlib.rcParams["axes.unicode_minus"] = False
