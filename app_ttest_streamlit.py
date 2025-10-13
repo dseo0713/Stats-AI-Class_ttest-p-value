@@ -12,24 +12,26 @@ st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", 
 from matplotlib import font_manager as fm
 from pathlib import Path
 
+# 폰트 파일 탐색: fonts/ 또는 레포 루트에 있으면 자동 등록
+base = Path(__file__).resolve().parent
 font_paths = [
-    Path(__file__).parent / "fonts" / "NanumGothic.ttf",
-    Path(__file__).parent / "NanumGothic.ttf",
-    Path(__file__).parent / "fonts" / "NotoSansKR-Regular.otf",
-    Path(__file__).parent / "NotoSansKR-Regular.otf",
+    base / "fonts" / "NanumGothic.ttf",
+    base / "NanumGothic.ttf",
+    base / "fonts" / "NotoSansKR-Regular.otf",
+    base / "NotoSansKR-Regular.otf",
 ]
 
 added = False
 for p in font_paths:
-    if p.exists():
+    if p.exists() and p.suffix.lower() in {".ttf", ".otf", ".ttc"} and p.stat().st_size > 10_000:
         try:
             fm.fontManager.addfont(str(p))
             added = True
             break
         except Exception:
-            # 폰트 파일이 손상/비정상인 경우 스킵
+            # 손상/비정상 파일은 스킵
             pass
-# added=False면 아래 OS별 후보/설치 폰트 탐색 로직으로 그대로 진행
+# added=False여도 이후 OS별 후보/설치 폰트 탐색 로직으로 계속 진행
 
 
     # 2) 보조 후보 목록 (설치 환경별 차이를 흡수)
@@ -57,7 +59,7 @@ for p in font_paths:
     matplotlib.rcParams["axes.unicode_minus"] = False
 
 # Fonts
-ensure_korean_font()  # ← 기존 블록을 이 한 줄로 대체 (내부에서 OS 분기 + 폴백 수행)
+ensure_korean_font()
 
 st.title("DW SEO] 독립표본 t-검증 프로그램")
 
