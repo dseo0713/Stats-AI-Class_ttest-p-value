@@ -231,9 +231,22 @@ st.markdown(report, unsafe_allow_html=True)
 if show_plots:
     st.subheader("5) 요약 그래프")
 
-    # 폰트 재설정 및 캐시 갱신
-    ensure_korean_font()
-    plt.rcParams.update({'font.family': matplotlib.rcParams['font.family']})
+    # 강제로 폰트 재설정
+    import matplotlib.font_manager as fm
+    
+    # 사용 가능한 한글 폰트 찾기
+    available_fonts = [f.name for f in fm.fontManager.ttflist]
+    korean_font = None
+    
+    for font in ['Malgun Gothic', 'AppleGothic', 'NanumGothic', 'Noto Sans CJK KR', 'NanumBarunGothic']:
+        if font in available_fonts:
+            korean_font = font
+            break
+    
+    if korean_font:
+        plt.rcParams['font.family'] = korean_font
+    
+    plt.rcParams['axes.unicode_minus'] = False
     
     fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
 
@@ -244,10 +257,7 @@ if show_plots:
 
     ax.set_ylabel("값(평균)", fontsize=5)
     ax.set_title("평균 ± 신뢰구간(95%)", fontsize=5)
-    
-    # x축 라벨 명시적 설정
-    ax.set_xticks([0, 1])
-    ax.set_xticklabels([str(g1), str(g2)], fontsize=5)
+    ax.tick_params(axis='x', labelsize=5)
     ax.tick_params(axis='y', labelsize=5)
 
     for spine in ax.spines.values():
