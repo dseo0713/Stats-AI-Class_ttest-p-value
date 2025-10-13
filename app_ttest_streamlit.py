@@ -227,10 +227,22 @@ report = (
 )
 st.markdown(report, unsafe_allow_html=True)
 
+
 # 5) Plot
 if show_plots:
     st.subheader("5) 요약 그래프")
-
+    
+    # 테스트용 코드 (여기에 추가)
+    import matplotlib.font_manager as fm
+    fonts = [f.name for f in fm.fontManager.ttflist if 'Gothic' in f.name or 'Nanum' in f.name]
+    st.write("사용 가능한 한글 폰트:", fonts)
+    
+    # 그래프 그리기 직전에 폰트 재설정
+    ensure_korean_font()
+    
+    fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
+    # ... 나머지 코드
+    
     # 강제로 폰트 재설정
     import matplotlib.font_manager as fm
     
