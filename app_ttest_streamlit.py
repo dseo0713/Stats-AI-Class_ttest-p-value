@@ -264,6 +264,3 @@ if show_plots:
     plt.rcParams['axes.unicode_minus'] = False
     
     fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
-
-    ax.bar([g1, g2], [m1, m2], width=0.7, color="#1f77b4", edgecolor="black", linewidth=0.8, antialiased=True)
-    ax.errorbar([g1, g2], [m1, m
