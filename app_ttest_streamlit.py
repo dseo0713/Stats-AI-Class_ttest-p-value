@@ -5,17 +5,46 @@ import scipy.stats as stats
 import platform
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib import font_manager as fm  # ← 추가
 
 st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
+# --- 최소 보강: 설치된 한글 폰트 자동 감지 (기존 분기 유지 + 폴백) ---
+def ensure_korean_font():
+    # 1) 기존 OS별 기본 후보
+    if platform.system() == "Windows":
+        primary = "Malgun Gothic"
+    elif platform.system() == "Darwin":
+        primary = "AppleGothic"
+    else:
+        primary = "NanumGothic"
+
+    # 2) 보조 후보 목록 (설치 환경별 차이를 흡수)
+    candidates = [
+        primary,
+        "NanumGothic",
+        "Noto Sans CJK KR",
+        "Noto Sans KR",
+        "Noto Sans CJK",
+        "Noto Sans",
+        "AppleGothic",
+        "Malgun Gothic",
+        "NanumBarunGothic",
+    ]
+
+    installed = {f.name for f in fm.fontManager.ttflist}
+    for name in candidates:
+        if name in installed:
+            matplotlib.rcParams["font.family"] = name
+            break
+    else:
+        # 최후의 보루(영문 기본) — 한글 미지원일 수 있으나 그대로 둠
+        matplotlib.rcParams["font.family"] = matplotlib.rcParams.get("font.family", "DejaVu Sans")
+
+    matplotlib.rcParams["axes.unicode_minus"] = False
+
 # Fonts
-if platform.system() == "Windows":
-    matplotlib.rcParams["font.family"] = "Malgun Gothic"
-elif platform.system() == "Darwin":
-    matplotlib.rcParams["font.family"] = "AppleGothic"
-else:
-    matplotlib.rcParams["font.family"] = "NanumGothic"
-matplotlib.rcParams["axes.unicode_minus"] = False
+ensure_korean_font()  # ← 기존 블록을 이 한 줄로 대체 (내부에서 OS 분기 + 폴백 수행)
 
 st.title("DW SEO] 독립표본 t-검증 프로그램")
 
@@ -123,7 +152,6 @@ if "단측" in tail:
 else:
     p_val = p_two
 
-# --- 유의성 스타 문자열 ---
 def sig_stars(p):
     if p < 0.001:
         return "(***)"
@@ -134,8 +162,7 @@ def sig_stars(p):
     else:
         return ""
 
-stars = sig_stars(p_val)   # p값에 따른 별 문자열
-
+stars = sig_stars(p_val)
 
 df = n1 + n2 - 2
 
@@ -155,12 +182,10 @@ with c2:
     st.metric(f"p-값 {stars}", f"{p_val:.4f}")
     st.metric("평균차 (A-B)", f"{mean_diff:.2f}")
 
-
 st.write(f"신뢰구간 (95%): [{ci_low:.2f}, {ci_high:.2f}]")
 
 decision = "유의함(H0 기각)" if p_val < alpha else "유의하지 않음(H0 기각 불가)"
 st.success(f"결론: {decision} (α={alpha}, p={p_val:.4f})")
-
 
 # 4) Narrative
 st.markdown("---")
@@ -180,36 +205,26 @@ report = (
     f"{'통계적으로 유의미한 차이가 있었다' if p_val < alpha else '유의미한 차이가 없었다'}."
     f" 평균차({g1}-{g2})={mean_diff:.2f}, 95% CI [{ci_low:.2f}, {ci_high:.2f}] 이다.</b>"
 )
-
 st.markdown(report, unsafe_allow_html=True)
-
 
 # 5) Plot
 if show_plots:
     st.subheader("5) 요약 그래프")
 
-    # ▶ 고해상도 렌더링: dpi↑  (작은 도면일수록 dpi를 크게)
-    fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)  # 이전과 같은 크기, 해상도만 ↑
+    fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
 
-    # 막대(간격 더 좁게) + 에러바
     ax.bar([g1, g2], [m1, m2], width=0.7, color="#1f77b4", edgecolor="black", linewidth=0.8, antialiased=True)
     ax.errorbar([g1, g2], [m1, m2],
                 yerr=[tcrit*se1, tcrit*se2],
                 fmt='none', capsize=4, color='black', elinewidth=1.2, antialiased=True)
 
-    # 폰트 크기(요청값 유지)
     ax.set_ylabel("값(평균)", fontsize=5)
     ax.set_title("평균 ± 신뢰구간(95%)", fontsize=5)
     ax.tick_params(axis='x', labelsize=5)
     ax.tick_params(axis='y', labelsize=5)
 
-    # 테두리/눈금선 너무 두껍게 보이지 않도록 정리
     for spine in ax.spines.values():
         spine.set_linewidth(0.8)
 
-    # 여백 최소화 + 앤티앨리어싱 유지
     plt.tight_layout(pad=0.05)
-
-    # ▶ Streamlit에 그대로 출력(컨테이너 폭에 맞춰 늘리지 않음)
     st.pyplot(fig, use_container_width=False)
-
