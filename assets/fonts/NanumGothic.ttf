@@ -1,1 +1,13 @@
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
+# ① 레포에 넣은 폰트 경로
+FONT_PATH = "assets/fonts/NanumGothic.ttf"   # 또는 NotoSansKR-Regular.otf
+
+# ② 런타임에 폰트 등록
+fm.fontManager.addfont(FONT_PATH)
+
+# ③ Matplotlib 기본 폰트로 지정 (+ 마이너스 기호 깨짐 방지)
+matplotlib.rcParams["font.family"] = "NanumGothic"  # 파일에 내장된 폰트의 패밀리명
+matplotlib.rcParams["axes.unicode_minus"] = False
