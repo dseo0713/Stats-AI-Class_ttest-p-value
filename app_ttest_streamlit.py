@@ -23,7 +23,7 @@ st.title("DW SEO] 독립표본 t-검증 프로그램")
 st.sidebar.header("옵션")
 tail = st.sidebar.radio("검증 방향", ["양측(two-tailed)", "단측(one-tailed, A > B)", "단측(one-tailed, A < B)"], index=0)
 alpha = st.sidebar.number_input("유의수준 α", min_value=0.001, max_value=0.5, value=0.05, step=0.01, format="%.3f")
-show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI) 표시", value=True)
+show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
 
 # 1) Upload
 st.subheader("1) 데이터 업로드")
