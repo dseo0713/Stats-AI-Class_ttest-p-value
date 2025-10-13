@@ -7,8 +7,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 def ensure_korean_font():
     from matplotlib import font_manager as fm
-    # 🔽 추가: 폰트 등록
-    fm.fontManager.addfont("fonts/NanumGothic.ttf")  # 또는 "fonts/NotoSansKR-Regular.otf"
+    fm.fontManager.addfont("fonts/NanumGothic.ttf")    
     
 st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
