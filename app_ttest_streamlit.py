@@ -228,11 +228,12 @@ report = (
 st.markdown(report, unsafe_allow_html=True)
 
 # 5) Plot
-# 5) Plot
 if show_plots:
     st.subheader("5) 요약 그래프")
 
+    # 폰트 재설정 및 캐시 갱신
     ensure_korean_font()
+    plt.rcParams.update({'font.family': matplotlib.rcParams['font.family']})
     
     fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
 
@@ -243,11 +244,11 @@ if show_plots:
 
     ax.set_ylabel("값(평균)", fontsize=5)
     ax.set_title("평균 ± 신뢰구간(95%)", fontsize=5)
-    ax.tick_params(axis='x', labelsize=5)
-    ax.tick_params(axis='y', labelsize=5)
     
-    # x축 tick 라벨에 명시적으로 폰트 설정 추가
-    ax.set_xticklabels([g1, g2], fontsize=5, fontfamily=matplotlib.rcParams['font.family'])
+    # x축 라벨 명시적 설정
+    ax.set_xticks([0, 1])
+    ax.set_xticklabels([str(g1), str(g2)], fontsize=5)
+    ax.tick_params(axis='y', labelsize=5)
 
     for spine in ax.spines.values():
         spine.set_linewidth(0.8)
