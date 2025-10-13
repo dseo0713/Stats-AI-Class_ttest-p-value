@@ -6,7 +6,7 @@ import platform
 import matplotlib
 import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="독립표본 t-검정 프로그램 (최종)", layout="centered")
+st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
 # Fonts
 if platform.system() == "Windows":
@@ -17,11 +17,11 @@ else:
     matplotlib.rcParams["font.family"] = "NanumGothic"
 matplotlib.rcParams["axes.unicode_minus"] = False
 
-st.title("독립표본 t-검정 프로그램")
+st.title("DW SEO] 독립표본 t-검증 프로그램")
 
 # Sidebar
 st.sidebar.header("옵션")
-tail = st.sidebar.radio("검정 방향", ["양측(two-tailed)", "단측(one-tailed, A > B)", "단측(one-tailed, A < B)"], index=0)
+tail = st.sidebar.radio("검증 방향", ["양측(two-tailed)", "단측(one-tailed, A > B)", "단측(one-tailed, A < B)"], index=0)
 alpha = st.sidebar.number_input("유의수준 α", min_value=0.001, max_value=0.5, value=0.05, step=0.01, format="%.3f")
 show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI) 표시", value=True)
 
@@ -44,7 +44,7 @@ if uploaded is not None:
         st.stop()
 
 if data is None:
-    st.info("업로드가 없으면 예시 데이터를 사용합니다.")
+    st.info("업로드된 파일이 없으면 아래의 예시 데이터를 사용합니다.")
     data = pd.DataFrame({
         "group": ["남자"]*7 + ["여자"]*6,
         "value": [78,67,97,87,78,76,79, 56,76,56,45,65,55]
@@ -76,7 +76,7 @@ x = data.loc[data["group"]==g1, "value"].to_numpy(dtype=float)
 y = data.loc[data["group"]==g2, "value"].to_numpy(dtype=float)
 
 # 2) Descriptives
-st.subheader("2) 기술통계")
+st.subheader("2) 독립변수(집단) 통계")
 
 def descriptives(arr):
     n = len(arr)
@@ -110,7 +110,7 @@ styled_desc = (
 st.markdown(styled_desc.to_html(), unsafe_allow_html=True)
 
 # 3) t-test (equal variance assumed)
-st.subheader("3) 검정 결과")
+st.subheader("3) 검증 결과")
 equal_var = True
 
 tstat, p_two = stats.ttest_ind(x, y, equal_var=equal_var, alternative="two-sided")
@@ -122,6 +122,20 @@ if "단측" in tail:
         p_val = p_two/2.0 if tstat < 0 else 1 - (p_two/2.0)
 else:
     p_val = p_two
+
+# --- 유의성 스타 문자열 ---
+def sig_stars(p):
+    if p < 0.001:
+        return "(***)"
+    elif p < 0.01:
+        return "(**)"
+    elif p < 0.05:
+        return "(*)"
+    else:
+        return ""
+
+stars = sig_stars(p_val)   # p값에 따른 별 문자열
+
 
 df = n1 + n2 - 2
 
@@ -135,38 +149,67 @@ ci_high = mean_diff + tcrit*se_diff
 
 c1, c2 = st.columns(2)
 with c1:
-    st.metric("t 통계량", f"{tstat:.4f}")
-    st.metric("자유도 df", f"{df:.2f}")
+    st.metric("t-값", f"{tstat:.4f}")
+    st.metric("자유도(df)", f"{df:.2f}")
 with c2:
-    st.metric("p 값", f"{p_val:.4f}")
+    st.metric(f"p-값 {stars}", f"{p_val:.4f}")
     st.metric("평균차 (A-B)", f"{mean_diff:.2f}")
+
 
 st.write(f"신뢰구간 (95%): [{ci_low:.2f}, {ci_high:.2f}]")
 
 decision = "유의함(H0 기각)" if p_val < alpha else "유의하지 않음(H0 기각 불가)"
 st.success(f"결론: {decision} (α={alpha}, p={p_val:.4f})")
 
+
 # 4) Narrative
 st.markdown("---")
-st.subheader("4) 해석(리포트 문장)")
+st.subheader("4) 해석")
+
 if "양측" in tail:
-    tail_txt = "양측검정"
+    tail_txt = "양측검증"
 elif "A > B" in tail:
-    tail_txt = "단측검정(H1: A>B)"
+    tail_txt = "단측검증(H1: A>B)"
 else:
-    tail_txt = "단측검정(H1: A<B)"
-report = (f"{tail_txt} 기준으로 {g1}의 평균({m1:.2f})과 {g2}의 평균({m2:.2f})을 비교한 결과, "
-          f"t={tstat:.2f}, df={df:.0f}, p={p_val:.4f}로 "
-          f"{'통계적으로 유의한 차이가 있었다' if p_val < alpha else '유의한 차이가 없었다'}. "
-          f"평균차({g1}-{g2})={mean_diff:.2f}, 95% CI [{ci_low:.2f}, {ci_high:.2f}] 입니다.")
-st.write(report)
+    tail_txt = "단측검증(H1: A<B)"
+
+report = (
+    f"<b style='color:red;'>{tail_txt} 기준으로 {g1}의 평균({m1:.2f})과 "
+    f"{g2}의 평균({m2:.2f})을 비교한 결과, "
+    f"t={tstat:.2f}, df={df:.0f}, p={p_val:.4f}로 "
+    f"{'통계적으로 유의미한 차이가 있었다' if p_val < alpha else '유의미한 차이가 없었다'}."
+    f" 평균차({g1}-{g2})={mean_diff:.2f}, 95% CI [{ci_low:.2f}, {ci_high:.2f}] 이다.</b>"
+)
+
+st.markdown(report, unsafe_allow_html=True)
+
 
 # 5) Plot
 if show_plots:
     st.subheader("5) 요약 그래프")
-    fig, ax = plt.subplots()
-    ax.bar([g1, g2], [m1, m2])
-    ax.errorbar([g1, g2], [m1, m2], yerr=[tcrit*se1, tcrit*se2], fmt='none', capsize=6)
-    ax.set_ylabel("값(평균)")
-    ax.set_title("평균 ± 신뢰구간(95%)")
-    st.pyplot(fig)
+
+    # ▶ 고해상도 렌더링: dpi↑  (작은 도면일수록 dpi를 크게)
+    fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)  # 이전과 같은 크기, 해상도만 ↑
+
+    # 막대(간격 더 좁게) + 에러바
+    ax.bar([g1, g2], [m1, m2], width=0.7, color="#1f77b4", edgecolor="black", linewidth=0.8, antialiased=True)
+    ax.errorbar([g1, g2], [m1, m2],
+                yerr=[tcrit*se1, tcrit*se2],
+                fmt='none', capsize=4, color='black', elinewidth=1.2, antialiased=True)
+
+    # 폰트 크기(요청값 유지)
+    ax.set_ylabel("값(평균)", fontsize=5)
+    ax.set_title("평균 ± 신뢰구간(95%)", fontsize=5)
+    ax.tick_params(axis='x', labelsize=5)
+    ax.tick_params(axis='y', labelsize=5)
+
+    # 테두리/눈금선 너무 두껍게 보이지 않도록 정리
+    for spine in ax.spines.values():
+        spine.set_linewidth(0.8)
+
+    # 여백 최소화 + 앤티앨리어싱 유지
+    plt.tight_layout(pad=0.05)
+
+    # ▶ Streamlit에 그대로 출력(컨테이너 폭에 맞춰 늘리지 않음)
+    st.pyplot(fig, use_container_width=False)
+
