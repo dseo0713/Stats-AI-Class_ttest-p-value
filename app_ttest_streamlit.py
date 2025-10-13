@@ -9,28 +9,28 @@ from pathlib import Path
     
 st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
-def ensure_korean_font():
-    from matplotlib import font_manager as fm
-    from pathlib import Path  # 혹시 상단에 이미 있다면 생략 가능
+from matplotlib import font_manager as fm
+from pathlib import Path
 
-    # 폰트 파일을 fonts 폴더와 루트 폴더 모두에서 탐색
-    font_paths = [
-        Path(__file__).parent / "fonts" / "NanumGothic.ttf",
-        Path(__file__).parent / "NanumGothic.ttf",
-        Path(__file__).parent / "fonts" / "NotoSansKR-Regular.otf",
-        Path(__file__).parent / "NotoSansKR-Regular.otf",
-    ]
-    for p in font_paths:
-        if p.exists():
+font_paths = [
+    Path(__file__).parent / "fonts" / "NanumGothic.ttf",
+    Path(__file__).parent / "NanumGothic.ttf",
+    Path(__file__).parent / "fonts" / "NotoSansKR-Regular.otf",
+    Path(__file__).parent / "NotoSansKR-Regular.otf",
+]
+
+added = False
+for p in font_paths:
+    if p.exists():
+        try:
             fm.fontManager.addfont(str(p))
+            added = True
             break
+        except Exception:
+            # 폰트 파일이 손상/비정상인 경우 스킵
+            pass
+# added=False면 아래 OS별 후보/설치 폰트 탐색 로직으로 그대로 진행
 
-    if platform.system() == "Windows":
-        primary = "Malgun Gothic"
-    elif platform.system() == "Darwin":
-        primary = "AppleGothic"
-    else:
-        primary = "NanumGothic"
 
     # 2) 보조 후보 목록 (설치 환경별 차이를 흡수)
     candidates = [
