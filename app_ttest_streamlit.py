@@ -255,9 +255,6 @@ if show_plots:
             except Exception:
                 pass
     
-    if not font_loaded:
-        st.warning("한글 폰트를 찾을 수 없습니다.")
-    
     plt.rcParams['axes.unicode_minus'] = False
     
     fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
