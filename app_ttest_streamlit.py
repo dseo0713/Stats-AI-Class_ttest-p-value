@@ -232,33 +232,28 @@ st.markdown(report, unsafe_allow_html=True)
 if show_plots:
     st.subheader("5) 요약 그래프")
     
-    # 테스트용 코드 (여기에 추가)
+    # 폰트 파일 직접 로드
     import matplotlib.font_manager as fm
-    fonts = [f.name for f in fm.fontManager.ttflist if 'Gothic' in f.name or 'Nanum' in f.name]
-    st.write("사용 가능한 한글 폰트:", fonts)
+    from pathlib import Path
     
-    # 그래프 그리기 직전에 폰트 재설정
-    ensure_korean_font()
+    # 레포지토리의 폰트 파일 경로들
+    base = Path(__file__).resolve().parent
+    font_paths = [
+        base / "fonts" / "NanumGothic.ttf",
+        base / "NanumGothic.ttf",
+        base / "fonts" / "NotoSansKR-Regular.otf",
+        base / "NotoSansKR-Regular.otf",
+    ]
     
-    fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
-    # ... 나머지 코드
-    
-    # 강제로 폰트 재설정
-    import matplotlib.font_manager as fm
-    
-    # 사용 가능한 한글 폰트 찾기
-    available_fonts = [f.name for f in fm.fontManager.ttflist]
-    korean_font = None
-    
-    for font in ['Malgun Gothic', 'AppleGothic', 'NanumGothic', 'Noto Sans CJK KR', 'NanumBarunGothic']:
-        if font in available_fonts:
-            korean_font = font
+    font_prop = None
+    for font_path in font_paths:
+        if font_path.exists():
+            font_prop = fm.FontProperties(fname=str(font_path))
+            st.success(f"폰트 로드 성공: {font_path.name}")
             break
     
-    if korean_font:
-        plt.rcParams['font.family'] = korean_font
-    
-    plt.rcParams['axes.unicode_minus'] = False
+    if font_prop is None:
+        st.warning("한글 폰트를 찾을 수 없습니다. 폰트 파일(.ttf)을 프로젝트 폴더에 추가해주세요.")
     
     fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
 
@@ -267,8 +262,15 @@ if show_plots:
                 yerr=[tcrit*se1, tcrit*se2],
                 fmt='none', capsize=4, color='black', elinewidth=1.2, antialiased=True)
 
-    ax.set_ylabel("값(평균)", fontsize=5)
-    ax.set_title("평균 ± 신뢰구간(95%)", fontsize=5)
+    if font_prop:
+        ax.set_ylabel("값(평균)", fontsize=5, fontproperties=font_prop)
+        ax.set_title("평균 ± 신뢰구간(95%)", fontsize=5, fontproperties=font_prop)
+        for label in ax.get_xticklabels():
+            label.set_fontproperties(font_prop)
+    else:
+        ax.set_ylabel("값(평균)", fontsize=5)
+        ax.set_title("평균 ± 신뢰구간(95%)", fontsize=5)
+    
     ax.tick_params(axis='x', labelsize=5)
     ax.tick_params(axis='y', labelsize=5)
 
