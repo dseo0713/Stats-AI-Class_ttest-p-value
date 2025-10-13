@@ -5,8 +5,11 @@ import scipy.stats as stats
 import platform
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import font_manager as fm  # ← 추가
-
+def ensure_korean_font():
+    from matplotlib import font_manager as fm
+    # 🔽 추가: 폰트 등록
+    fm.fontManager.addfont("fonts/NanumGothic.ttf")  # 또는 "fonts/NotoSansKR-Regular.otf"
+    
 st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
 # --- 최소 보강: 설치된 한글 폰트 자동 감지 (기존 분기 유지 + 폴백) ---
