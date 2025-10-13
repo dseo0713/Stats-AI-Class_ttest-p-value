@@ -5,6 +5,7 @@ import scipy.stats as stats
 import platform
 import matplotlib
 import matplotlib.pyplot as plt
+import koreanize_matplotlib  # auto font for Korean
 
 st.set_page_config(page_title="독립표본 t-검증증 프로그램 (최종)", layout="centered")
 
