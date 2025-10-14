@@ -257,7 +257,7 @@ if show_plots:
     
     plt.rcParams['axes.unicode_minus'] = False
     
-    fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=240)
+    fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=100)
     
     ax.bar([g1, g2], [m1, m2], width=0.7, color="#1f77b4", edgecolor="black", linewidth=0.8, antialiased=True)
     ax.errorbar([g1, g2], [m1, m2], yerr=[tcrit*se1, tcrit*se2], fmt='none', capsize=4, color='black', elinewidth=1.2, antialiased=True)
