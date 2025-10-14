@@ -259,7 +259,7 @@ if show_plots:
     
     fig, ax = plt.subplots(figsize=(3, 2.2), dpi=400)
     
-    ax.bar([g1, g2], [m1, m2], width=0.6, color="#1f77b4", edgecolor="black", linewidth=0.5, antialiased=True)
+    ax.bar([g1, g2], [m1, m2], width=0.6, color="#1f77b4", edgecolor="black", linewidth=0.8, antialiased=True)
     ax.errorbar([g1, g2], [m1, m2], yerr=[tcrit*se1, tcrit*se2], fmt='none', capsize=4, color='black', elinewidth=1.2, antialiased=True)
     
     ax.set_ylabel("값(평균)", fontsize=7)
