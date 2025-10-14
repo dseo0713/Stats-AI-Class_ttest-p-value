@@ -257,15 +257,15 @@ if show_plots:
     
     plt.rcParams['axes.unicode_minus'] = False
     
-    fig, ax = plt.subplots(figsize=(2.5, 1.8), dpi=100)
+    fig, ax = plt.subplots(figsize=(3.2, 2.3), dpi=300)
     
     ax.bar([g1, g2], [m1, m2], width=0.7, color="#1f77b4", edgecolor="black", linewidth=0.8, antialiased=True)
     ax.errorbar([g1, g2], [m1, m2], yerr=[tcrit*se1, tcrit*se2], fmt='none', capsize=4, color='black', elinewidth=1.2, antialiased=True)
     
-    ax.set_ylabel("값(평균)", fontsize=7)
-    ax.set_title("평균 ± 신뢰구간(95%)", fontsize=7)
-    ax.tick_params(axis='x', labelsize=7)
-    ax.tick_params(axis='y', labelsize=7)
+    ax.set_ylabel("값(평균)", fontsize=6.5)
+    ax.set_title("평균 ± 신뢰구간(95%)", fontsize=6.5)
+    ax.tick_params(axis='x', labelsize=6.5)
+    ax.tick_params(axis='y', labelsize=6.5)
     
     for spine in ax.spines.values():
         spine.set_linewidth(0.8)
