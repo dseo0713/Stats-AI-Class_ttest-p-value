@@ -177,9 +177,9 @@ st.subheader("1) 데이터 업로드")
 uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["xlsx","xls"])
 st.markdown("""
 ***유의사항**
-1. 첫 row (header) 그룹명
-2. 한 column을 한 그룹으로 2개의 그룹
-3. 모든 데이터는 숫자(numeric value)
+1. 첫 row (header) 집단명 [예: 남자,여자]
+2. 한 column을 한 집단으로 > 2개의 집단 지정
+3. 집단 내 모든 데이터는 숫자(numeric value)
 """)
 
 data = None
