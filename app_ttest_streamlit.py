@@ -178,7 +178,7 @@ uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["xlsx","xls"])
 st.markdown("""
 ***유의사항**
 1. 1번 행(header) > A열 'group' / B열 'value'로 header 정의
-2. A열 'group'명 [예: 남자,여자] 기입 + B열 데이터 입력
+2. A열 'group' 집단명 [예: 남자, 여자] 기입 + B열 데이터 입력
 3. B열의 모든 데이터는 반드시 숫자(numeric value)
 """)
 
