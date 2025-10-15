@@ -68,33 +68,27 @@ ensure_korean_font()
 
 st.title("DW SEO] 독립표본 t-검증 프로그램")
 
-
 # Sidebar
+st.sidebar.header("옵션")
+tail = st.sidebar.radio("검증 방향", ["양측(two-tailed)", "단측(one-tailed, A > B)", "단측(one-tailed, A < B)"], index=0)
+
+# 유의수준 선택을 버튼 방식으로 변경
+alpha_options = [0.05, 0.01, 0.001]
+if 'alpha_index' not in st.session_state:
+    st.session_state.alpha_index = 0
+
 st.sidebar.write("유의수준 α")
-col1, col2, col3 = st.sidebar.columns([0.6, 2.8, 0.6])
+col1, col2, col3 = st.sidebar.columns([1, 2, 1])
 with col1:
-    st.markdown("""
-        <style>
-        div[data-testid="column"]:nth-of-type(1) button,
-        div[data-testid="column"]:nth-of-type(3) button {
-            width: 28px !important;
-            height: 28px !important;
-            padding: 0 !important;
-            min-width: 28px !important;
-            font-size: 16px !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-    if st.button("−", key="alpha_minus"):
+    if st.button("-", key="alpha_minus"):
         if st.session_state.alpha_index > 0:
             st.session_state.alpha_index -= 1
 with col2:
-    st.markdown(f"<div style='text-align: center; line-height: 28px;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
+    st.write(f"<div style='text-align: center;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
 with col3:
-    if st.button("＋", key="alpha_plus"):
+    if st.button("+", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
             st.session_state.alpha_index += 1
-            
 
 alpha = alpha_options[st.session_state.alpha_index]
 
@@ -102,7 +96,7 @@ show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
 
 # 1) Upload
 st.subheader("1) 데이터 업로드")
-uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["xlsx","xls"])
+uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["csv","xlsx","xls"])
 st.markdown("""
 **유의사항**
 1. 첫 row (header) 그룹명
