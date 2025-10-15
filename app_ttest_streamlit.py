@@ -152,6 +152,25 @@ show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
 
 
 # 1) Upload
+
+
+st.markdown("""
+<style>
+/* "유의사항" 텍스트 다음에 Streamlit이 추가하는 마진을 제거합니다. */
+/* st.markdown으로 생성된 마크다운 텍스트를 감싸는 모든 div를 타겟팅합니다. */
+div.stMarkdown:has(p > strong:contains("유의사항")) {
+    margin-bottom: -10px; /* 음수 마진을 주어 다음 요소와의 간격을 줄입니다. (값 조정 가능) */
+}
+
+/* 유의사항의 리스트 (ul/ol)에 대한 상단 마진을 줄입니다. */
+div.stMarkdown ul {
+    margin-top: 5px; /* 리스트와 유의사항 제목 사이의 간격을 줄입니다. */
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 st.subheader("1) 데이터 업로드")
 uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["xlsx","xls"])
 st.markdown("""
