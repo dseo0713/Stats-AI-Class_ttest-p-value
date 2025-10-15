@@ -76,15 +76,15 @@ st.markdown("""
 /* 사이드바 내의 모든 버튼을 타겟팅합니다. */
 [data-testid="stSidebar"] button {
     /* 버튼을 정사각형 (예: 30px x 30px)으로 만들고 !important로 기본 스타일을 강제 오버라이드 */
-    width: 30px !important;
-    height: 15px !important;
+    width: 40px !important;
+    height: 10px !important;
     /* 버튼 내부의 텍스트/기호를 중앙에 배치하기 위해 padding을 제거합니다. */
     padding: 0;
     line-height: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px; /* 텍스트 크기를 적절히 조정 */
+    font-size: 12px; /* 텍스트 크기를 적절히 조정 */
     font-weight: bold;
 }
 /* 유의수준 숫자를 버튼과 같은 높이에 중앙 정렬합니다. */
