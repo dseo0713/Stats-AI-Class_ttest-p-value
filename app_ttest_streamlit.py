@@ -229,10 +229,11 @@ x = data.loc[data["group"]==g1, "value"].to_numpy(dtype=float)
 y = data.loc[data["group"]==g2, "value"].to_numpy(dtype=float)
 
 # 2) Descriptives
-st.subheader("2) 독립변수(집단) 기술통계")
-
-def descriptives(arr):
-    confidence_level = int((1 - alpha) * 100)
+mean_diff = m1 - m2
+sp2 = ((n1-1)*var1 + (n2-1)*var2) / (n1+n2-2) if df>0 else np.nan
+se1 = np.sqrt(var1/n1); se2 = np.sqrt(var2/n2)
+se_diff = np.sqrt(sp2*(1/n1 + 1/n2)) if df>0 else np.nan
+confidence_level = int((1 - alpha) * 100)
 tcrit = stats.t.ppf(1 - alpha/2, df) if "양측" in tail else stats.t.ppf(1 - alpha, df)
 ci_low = mean_diff - tcrit*se_diff
 ci_high = mean_diff + tcrit*se_diff
