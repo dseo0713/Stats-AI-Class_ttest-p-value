@@ -68,8 +68,6 @@ ensure_korean_font()
 
 st.title("DW SEO] 독립표본 t-검증 프로그램")
 
-
-
 # Sidebar
 st.markdown("""
 <style>
