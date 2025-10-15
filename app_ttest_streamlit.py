@@ -76,8 +76,8 @@ st.markdown("""
 /* 사이드바 내의 모든 버튼을 타겟팅합니다. */
 [data-testid="stSidebar"] button {
     /* 버튼을 정사각형 (예: 20px x 20px)으로 만들고 !important로 기본 스타일을 강제 오버라이드 */
-    width: 40px !important; /* 너비를 적절히 조정 */
-    height: 40px !important; /* 버튼 높이를 기호가 보이도록 충분히 확보 */
+    width: 30px !important; /* 너비를 적절히 조정 */
+    height: 30px !important; /* 버튼 높이를 기호가 보이도록 충분히 확보 */
     /* 버튼 내부의 텍스트/기호를 중앙에 배치하기 위해 padding을 제거합니다. */
     padding: 0;
     line-height: 1;
@@ -86,7 +86,7 @@ st.markdown("""
     align-items: center;
     
         /* 핵심 수정: 텍스트가 안 보이는 문제를 해결하기 위해 텍스트 색상을 강제 지정 */
-    color: red !important;
+    color: black !important;
     font-size: 15px; /* 기호 가시성을 위해 폰트 크기 조정 */
     font-weight: bold;
 }
