@@ -73,23 +73,40 @@ st.title("DW SEO] 독립표본 t-검증 프로그램")
 # Sidebar
 st.markdown("""
 <style>
-/* 사이드바 내의 모든 버튼을 타겟팅합니다. */
+/* 1. 버튼 (button) 컨테이너 자체 스타일 */
 [data-testid="stSidebar"] button {
-    /* 버튼을 정사각형 (예: 20px x 20px)으로 만들고 !important로 기본 스타일을 강제 오버라이드 */
-    width: 30px !important; /* 너비를 적절히 조정 */
-    height: 30px !important; /* 버튼 높이를 기호가 보이도록 충분히 확보 */
-    /* 버튼 내부의 텍스트/기호를 중앙에 배치하기 위해 padding을 제거합니다. */
-    padding: 0;
+    width: 40px !important; 
+    height: 40px !important; 
+    padding: 0; 
     line-height: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    
-        /* 핵심 수정: 텍스트가 안 보이는 문제를 해결하기 위해 텍스트 색상을 강제 지정 */
-    color: black !important;
-    font-size: 15px; /* 기호 가시성을 위해 폰트 크기 조정 */
     font-weight: bold;
+    /* 텍스트 색상은 내부 요소에서 강제 지정 */
 }
+
+/* 2. 버튼 내부의 텍스트 요소 (p)를 타겟팅하여 가시성 확보 (이전 버전의 핵심) */
+[data-testid="stSidebar"] button > div > p {
+    color: red !important;
+    font-size: 20px !important; 
+    line-height: 1 !important;
+    margin: 0 !important; 
+    padding: 0 !important;
+}
+
+/* 3. 새로운 추가: Streamlit이 텍스트를 감싸는 span 태그를 타겟팅하여 가시성 확보 */
+[data-testid="stSidebar"] button span {
+    color: red !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    margin: 0 !important; 
+    padding: 0 !important;
+    /* 텍스트가 잘리는 것을 막는 중요한 속성 */
+    display: block !important;
+}
+
+
 /* 유의수준 숫자를 버튼과 같은 높이에 중앙 정렬합니다. */
 [data-testid="stSidebar"] [data-testid="stColumn"] > div {
     display: flex;
