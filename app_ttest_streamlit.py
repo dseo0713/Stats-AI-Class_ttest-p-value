@@ -76,8 +76,8 @@ st.markdown("""
 /* 사이드바 내의 모든 버튼을 타겟팅합니다. */
 [data-testid="stSidebar"] button {
     /* 버튼을 정사각형 (예: 30px x 30px)으로 만들고 !important로 기본 스타일을 강제 오버라이드 */
-    width: 20px !important;
-    height: 20px !important;
+    width: 30px !important;
+    height: 15px !important;
     /* 버튼 내부의 텍스트/기호를 중앙에 배치하기 위해 padding을 제거합니다. */
     padding: 0;
     line-height: 1;
