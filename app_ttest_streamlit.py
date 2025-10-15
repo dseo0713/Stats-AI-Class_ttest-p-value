@@ -78,17 +78,34 @@ if 'alpha_index' not in st.session_state:
     st.session_state.alpha_index = 0
 
 st.sidebar.write("유의수준 α")
-col1, col2, col3 = st.sidebar.columns([1, 2, 1])
+col1, col2, col3 = st.sidebar.columns([0.8, 2, 0.8])
 with col1:
+    st.markdown("""
+        <style>
+        div[data-testid="column"]:nth-of-type(1) button {
+            width: 35px !important;
+            height: 35px !important;
+            padding: 0 !important;
+            min-width: 35px !important;
+        }
+        div[data-testid="column"]:nth-of-type(3) button {
+            width: 35px !important;
+            height: 35px !important;
+            padding: 0 !important;
+            min-width: 35px !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
     if st.button("−", key="alpha_minus"):
         if st.session_state.alpha_index > 0:
             st.session_state.alpha_index -= 1
 with col2:
-    st.markdown(f"<div style='text-align: center; padding-top: 5px;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align: center; padding-top: 8px;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
 with col3:
-    if st.button("+", key="alpha_plus"):
+    if st.button("＋", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
             st.session_state.alpha_index += 1
+            
 
 alpha = alpha_options[st.session_state.alpha_index]
 
