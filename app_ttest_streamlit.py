@@ -75,8 +75,8 @@ st.markdown("""
 <style>
 /* 1. 버튼 컨테이너 (정사각형 크기 및 오버플로우 방지) */
 [data-testid="stSidebar"] button {
-    width: 20px !important; 
-    height: 20px !important; 
+    width: 30px !important; 
+    height: 10px !important; 
     padding: 0; 
     line-height: 1;
     display: flex;
@@ -155,7 +155,7 @@ show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
 st.subheader("1) 데이터 업로드")
 uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["xlsx","xls"])
 st.markdown("""
-** *유의사항 **
+***유의사항 **
 1. 첫 row (header) 그룹명
 2. 한 column을 한 그룹으로 2개의 그룹
 3. 모든 데이터는 숫자(numeric value)
