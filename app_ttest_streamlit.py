@@ -68,7 +68,36 @@ ensure_korean_font()
 
 st.title("DW SEO] 독립표본 t-검증 프로그램")
 
+
+
 # Sidebar
+st.markdown("""
+<style>
+/* 사이드바 내의 모든 버튼을 타겟팅합니다. */
+[data-testid="stSidebar"] button {
+    /* 버튼을 정사각형 (예: 30px x 30px)으로 만들고 !important로 기본 스타일을 강제 오버라이드 */
+    width: 30px !important;
+    height: 30px !important;
+    /* 버튼 내부의 텍스트/기호를 중앙에 배치하기 위해 padding을 제거합니다. */
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px; /* 텍스트 크기를 적절히 조정 */
+    font-weight: bold;
+}
+/* 유의수준 숫자를 버튼과 같은 높이에 중앙 정렬합니다. */
+[data-testid="stSidebar"] [data-testid="stColumn"] > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# --- Sidebar Content ---
 st.sidebar.header("옵션")
 tail = st.sidebar.radio("검증 방향", ["양측(two-tailed)", "단측(one-tailed, A > B)", "단측(one-tailed, A < B)"], index=0)
 
@@ -77,14 +106,21 @@ alpha_options = [0.05, 0.01, 0.001]
 if 'alpha_index' not in st.session_state:
     st.session_state.alpha_index = 0
 
-st.sidebar.write("유의수준 α")
+st.sidebar.write("유의수준 $\\alpha$") # LaTeX를 사용하여 알파 기호를 더 깔끔하게 표시했습니다.
 col1, col2, col3 = st.sidebar.columns([1, 2, 1])
+
+# "-" 버튼
 with col1:
     if st.button("-", key="alpha_minus"):
         if st.session_state.alpha_index > 0:
             st.session_state.alpha_index -= 1
+
+# 유의수준 값 표시
 with col2:
-    st.write(f"<div style='text-align: center;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
+    # HTML div를 사용하여 중앙 정렬 및 가독성 향상
+    st.write(f"<div style='text-align: center; font-weight: 600; font-size: 1.1rem;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
+
+# "+" 버튼
 with col3:
     if st.button("+", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
@@ -93,6 +129,8 @@ with col3:
 alpha = alpha_options[st.session_state.alpha_index]
 
 show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
+
+
 
 # 1) Upload
 st.subheader("1) 데이터 업로드")
