@@ -73,7 +73,7 @@ st.title("DW SEO] 독립표본 t-검증 프로그램")
 # Sidebar
 st.markdown("""
 <style>
-/* 1. 버튼 (button) 컨테이너 자체 스타일 */
+/* 1. 버튼 컨테이너 (정사각형 크기 및 오버플로우 방지) */
 [data-testid="stSidebar"] button {
     width: 40px !important; 
     height: 40px !important; 
@@ -85,41 +85,20 @@ st.markdown("""
     font-weight: bold;
     /* 텍스트가 잘리는 것을 방지 */
     overflow: visible !important; 
-    /* 테스트용: 버튼 배경을 잠시 파란색으로 설정하여 영역 확인 */
-    /* background-color: #2196F3 !important; */ 
-    
-    /* 핵심 수정: 버튼의 불투명도를 강제로 1로 설정 */
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
-/* 2. 버튼 내부의 텍스트 요소 (p)를 타겟팅하여 가시성 확보 */
-[data-testid="stSidebar"] button > div > p {
+/* 2. 버튼 내부의 텍스트 요소 (p 및 span)를 타겟팅하여 가시성 확보 및 수직 위치 조정 */
+/* 중복되는 p와 span 선택자를 통합하고 불필요한 opacity/visibility를 제거하여 코드를 간결하게 정리했습니다. */
+[data-testid="stSidebar"] button > div > p,
+[data-testid="stSidebar"] button span {
     color: red !important;
     font-size: 20px !important; 
     line-height: 1 !important;
     margin: 0 !important; 
     padding: 0 !important;
-    transform: translateY(-5px) !important;
-    
-    /* 핵심 수정: 텍스트 요소의 불투명도를 강제로 1로 설정 */
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* 3. Streamlit이 텍스트를 감싸는 span 태그를 타겟팅하여 가시성 확보 */
-[data-testid="stSidebar"] button span {
-    color: red !important;
-    font-size: 20px !important;
-    line-height: 1 !important;
-    margin: 0 !important; 
-    padding: 0 !important;
     display: block !important;
-    transform: translateY(-5px) !important;
-    
-    /* 핵심 수정: span 요소의 불투명도를 강제로 1로 설정 */
-    opacity: 1 !important;
-    visibility: visible !important;
+    /* 텍스트를 위로 살짝 이동시켜 수직 중앙에 맞춤 */
+    transform: translateY(-5px) !important; 
 }
 
 
@@ -146,7 +125,7 @@ if 'alpha_index' not in st.session_state:
 st.sidebar.write("유의수준 $\\alpha$")
 col1, col2, col3 = st.sidebar.columns([1, 2, 1])
 
-# "-" 버튼 로직
+# "<" 버튼 로직 (왼쪽)
 with col1:
     if st.button("<", key="alpha_minus"):
         if st.session_state.alpha_index > 0:
@@ -156,7 +135,7 @@ with col1:
 with col2:
     st.write(f"<div style='text-align: center; font-weight: 600; font-size: 1.1rem;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
 
-# "+" 버튼 로직
+# ">" 버튼 로직 (오른쪽)
 with col3:
     if st.button(">", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
