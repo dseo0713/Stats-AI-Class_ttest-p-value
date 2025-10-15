@@ -75,15 +75,16 @@ st.markdown("""
 <style>
 /* 사이드바 내의 모든 버튼을 타겟팅합니다. */
 [data-testid="stSidebar"] button {
-    width: 35px !important;
-    height: 3px !important;
+    /* 버튼을 정사각형 (예: 20px x 20px)으로 만들고 !important로 기본 스타일을 강제 오버라이드 */
+    width: 25px !important; /* 너비를 적절히 조정 */
+    height: 25px !important; /* 버튼 높이를 기호가 보이도록 충분히 확보 */
     /* 버튼 내부의 텍스트/기호를 중앙에 배치하기 위해 padding을 제거합니다. */
     padding: 0;
     line-height: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 7px; /* 텍스트 크기를 적절히 조정 */
+    font-size: 16px; /* 기호 가시성을 높이기 위해 폰트 크기 조정 */
     font-weight: bold;
 }
 /* 유의수준 숫자를 버튼과 같은 높이에 중앙 정렬합니다. */
@@ -100,15 +101,15 @@ st.markdown("""
 st.sidebar.header("옵션")
 tail = st.sidebar.radio("검증 방향", ["양측(two-tailed)", "단측(one-tailed, A > B)", "단측(one-tailed, A < B)"], index=0)
 
-# 유의수준 선택을 버튼 방식으로 변경
+# 유의수준 선택 관련 로직
 alpha_options = [0.05, 0.01, 0.001]
 if 'alpha_index' not in st.session_state:
     st.session_state.alpha_index = 0
 
-st.sidebar.write("유의수준 $\\alpha$") # LaTeX를 사용하여 알파 기호를 더 깔끔하게 표시했습니다.
+st.sidebar.write("유의수준 $\\alpha$")
 col1, col2, col3 = st.sidebar.columns([1, 2, 1])
 
-# "-" 버튼
+# "-" 버튼 로직
 with col1:
     if st.button("-", key="alpha_minus"):
         if st.session_state.alpha_index > 0:
@@ -116,10 +117,9 @@ with col1:
 
 # 유의수준 값 표시
 with col2:
-    # HTML div를 사용하여 중앙 정렬 및 가독성 향상
     st.write(f"<div style='text-align: center; font-weight: 600; font-size: 1.1rem;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
 
-# "+" 버튼
+# "+" 버튼 로직
 with col3:
     if st.button("+", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
