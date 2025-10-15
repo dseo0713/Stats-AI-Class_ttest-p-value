@@ -68,31 +68,20 @@ ensure_korean_font()
 
 st.title("DW SEO] 독립표본 t-검증 프로그램")
 
+
 # Sidebar
-st.sidebar.header("옵션")
-tail = st.sidebar.radio("검증 방향", ["양측(two-tailed)", "단측(one-tailed, A > B)", "단측(one-tailed, A < B)"], index=0)
-
-# 유의수준 선택을 버튼 방식으로 변경
-alpha_options = [0.05, 0.01, 0.001]
-if 'alpha_index' not in st.session_state:
-    st.session_state.alpha_index = 0
-
 st.sidebar.write("유의수준 α")
-col1, col2, col3 = st.sidebar.columns([0.8, 2, 0.8])
+col1, col2, col3 = st.sidebar.columns([0.6, 2.8, 0.6])
 with col1:
     st.markdown("""
         <style>
-        div[data-testid="column"]:nth-of-type(1) button {
-            width: 35px !important;
-            height: 35px !important;
-            padding: 0 !important;
-            min-width: 35px !important;
-        }
+        div[data-testid="column"]:nth-of-type(1) button,
         div[data-testid="column"]:nth-of-type(3) button {
-            width: 35px !important;
-            height: 35px !important;
+            width: 28px !important;
+            height: 28px !important;
             padding: 0 !important;
-            min-width: 35px !important;
+            min-width: 28px !important;
+            font-size: 16px !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -100,7 +89,7 @@ with col1:
         if st.session_state.alpha_index > 0:
             st.session_state.alpha_index -= 1
 with col2:
-    st.markdown(f"<div style='text-align: center; padding-top: 8px;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align: center; line-height: 28px;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
 with col3:
     if st.button("＋", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
