@@ -69,11 +69,11 @@ ensure_korean_font()
 st.title("DW SEO] 독립표본 t-검증 프로그램")
 st.markdown("""
     <style>
-    .block-container {
-        padding-top: 2rem !important;
+    .main .block-container {
+        padding-top: 3rem !important;
     }
-    h1 {
-        margin-bottom: 1rem !important;
+    div[data-testid="stTitle"] {
+        margin-bottom: 0.5rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
