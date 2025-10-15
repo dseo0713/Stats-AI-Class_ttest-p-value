@@ -177,7 +177,7 @@ st.subheader("1) 데이터 업로드")
 uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["xlsx","xls"])
 st.markdown("""
 ***유의사항**
-1. 첫 row (header) 집단명 [예: 남자,여자]
+1. 첫 row (header) 집단명 [예: 남자, 여자]
 2. 한 column을 한 집단으로 > 2개의 집단 지정
 3. 집단 내 모든 데이터는 숫자(numeric value)
 """)
@@ -229,7 +229,7 @@ x = data.loc[data["group"]==g1, "value"].to_numpy(dtype=float)
 y = data.loc[data["group"]==g2, "value"].to_numpy(dtype=float)
 
 # 2) Descriptives
-st.subheader("2) 독립변수(집단) 통계")
+st.subheader("2) 독립변수(집단) 기술통계")
 
 def descriptives(arr):
     n = len(arr)
