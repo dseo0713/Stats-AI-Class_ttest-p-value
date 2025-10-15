@@ -84,7 +84,10 @@ st.markdown("""
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px; /* 기호 가시성을 높이기 위해 폰트 크기 조정 */
+    
+        /* 핵심 수정: 텍스트가 안 보이는 문제를 해결하기 위해 텍스트 색상을 강제 지정 */
+    color: black !important;
+    font-size: 15px; /* 기호 가시성을 위해 폰트 크기 조정 */
     font-weight: bold;
 }
 /* 유의수준 숫자를 버튼과 같은 높이에 중앙 정렬합니다. */
