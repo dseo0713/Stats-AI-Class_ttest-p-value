@@ -134,8 +134,8 @@ with col1:
 
 # 유의수준 값 표시
 with col2:
-    show_plots = st.sidebar.checkbox("요약 그래프(평균±CI)", value=True)
-    
+    st.write(f"<div style='text-align: center; font-weight: 600; font-size: 1.1rem;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
+
 # ">" 버튼 로직 (오른쪽)
 with col3:
     # 텍스트 대신 HTML 엔티티를 사용하여 Streamlit의 텍스트 숨김 문제를 우회합니다.
@@ -146,7 +146,7 @@ with col3:
 
 alpha = alpha_options[st.session_state.alpha_index]
 
-show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
+show_plots = st.sidebar.checkbox("요약 그래프(평균±CI)", value=True)
 
 
 
@@ -229,14 +229,12 @@ x = data.loc[data["group"]==g1, "value"].to_numpy(dtype=float)
 y = data.loc[data["group"]==g2, "value"].to_numpy(dtype=float)
 
 # 2) Descriptives
-mean_diff = m1 - m2
-sp2 = ((n1-1)*var1 + (n2-1)*var2) / (n1+n2-2) if df>0 else np.nan
-se1 = np.sqrt(var1/n1); se2 = np.sqrt(var2/n2)
-se_diff = np.sqrt(sp2*(1/n1 + 1/n2)) if df>0 else np.nan
-confidence_level = int((1 - alpha) * 100)
-tcrit = stats.t.ppf(1 - alpha/2, df) if "양측" in tail else stats.t.ppf(1 - alpha, df)
-ci_low = mean_diff - tcrit*se_diff
-ci_high = mean_diff + tcrit*se_diff
+st.subheader("2) 독립변수(집단) 기술통계")
+
+def descriptives(arr):
+    n = len(arr)
+    mean = float(np.mean(arr)) if n>0 else np.nan
+    sd = float(np.std(arr, ddof=1)) if n>1 else np.nan
     var = float(np.var(arr, ddof=1)) if n>1 else np.nan
     return n, mean, sd, var
 
@@ -245,7 +243,7 @@ n2, m2, sd2, var2 = descriptives(y)
 
 desc_df = pd.DataFrame({
     "집단": [g1, g2],
-   st.write(f"신뢰구간 ({confidence_level}%): [{ci_low:.2f}, {ci_high:.2f}]")
+    "사례수(n)": [n1, n2],
     "평균": [m1, m2],
     "표준편차": [sd1, sd2],
     "분산": [var1, var2],
@@ -260,14 +258,13 @@ styled_desc = (
     desc_df.style
         .set_properties(**{"text-align": "center"})
         .set_table_styles([{"selector": "th", "props": [("text-align", "center")]}])
-report = (
-    f"<b style='color:red;'>{tail_txt} 기준으로 {g1}의 평균({m1:.2f})과 "
-    f"{g2}의 평균({m2:.2f})을 비교한 결과, "
-    f"t={tstat:.2f}, df={df:.0f}, p={p_val:.4f}로 "
-    f"{'통계적으로 유의미한 차이가 있었다' if p_val < alpha else '유의미한 차이가 없었다'}."
-    f" 평균차({g1}-{g2})={mean_diff:.2f}, {confidence_level}% CI [{ci_low:.2f}, {ci_high:.2f}] 이다.</b>"
+        .format({"평균": "{:.2f}", "표준편차": "{:.2f}", "분산": "{:.2f}"})
 )
+st.markdown(styled_desc.to_html(), unsafe_allow_html=True)
 
+# 3) t-test (equal variance assumed)
+st.subheader("3) 검증 결과")
+equal_var = True
 
 tstat, p_two = stats.ttest_ind(x, y, equal_var=equal_var, alternative="two-sided")
 
@@ -292,11 +289,12 @@ def sig_stars(p):
 stars = sig_stars(p_val)
 
 df = n1 + n2 - 2
-ax.set_title(f"평균 ± 신뢰구간({confidence_level}%)", fontsize=8)
+
 mean_diff = m1 - m2
 sp2 = ((n1-1)*var1 + (n2-1)*var2) / (n1+n2-2) if df>0 else np.nan
 se1 = np.sqrt(var1/n1); se2 = np.sqrt(var2/n2)
 se_diff = np.sqrt(sp2*(1/n1 + 1/n2)) if df>0 else np.nan
+confidence_level = int((1 - alpha) * 100)
 tcrit = stats.t.ppf(1 - alpha/2, df) if "양측" in tail else stats.t.ppf(1 - alpha, df)
 ci_low = mean_diff - tcrit*se_diff
 ci_high = mean_diff + tcrit*se_diff
@@ -309,7 +307,7 @@ with c2:
     st.metric(f"p-값 {stars}", f"{p_val:.4f}")
     st.metric("평균차 (A-B)", f"{mean_diff:.2f}")
 
-st.write(f"신뢰구간 (95%): [{ci_low:.2f}, {ci_high:.2f}]")
+st.write(f"신뢰구간 ({confidence_level}%): [{ci_low:.2f}, {ci_high:.2f}]")
 
 decision = "유의함(H0 기각)" if p_val < alpha else "유의하지 않음(H0 기각 불가)"
 st.success(f"결론: {decision} (α={alpha}, p={p_val:.4f})")
@@ -330,7 +328,7 @@ report = (
     f"{g2}의 평균({m2:.2f})을 비교한 결과, "
     f"t={tstat:.2f}, df={df:.0f}, p={p_val:.4f}로 "
     f"{'통계적으로 유의미한 차이가 있었다' if p_val < alpha else '유의미한 차이가 없었다'}."
-    f" 평균차({g1}-{g2})={mean_diff:.2f}, 95% CI [{ci_low:.2f}, {ci_high:.2f}] 이다.</b>"
+    f" 평균차({g1}-{g2})={mean_diff:.2f}, {confidence_level}% CI [{ci_low:.2f}, {ci_high:.2f}] 이다.</b>"
 )
 st.markdown(report, unsafe_allow_html=True)
 
@@ -370,7 +368,7 @@ if show_plots:
     ax.errorbar([g1, g2], [m1, m2], yerr=[tcrit*se1, tcrit*se2], fmt='none', capsize=4, color='black', elinewidth=1.2, antialiased=True)
     
     ax.set_ylabel("값(평균)", fontsize=8)
-    ax.set_title("평균 ± 신뢰구간(95%)", fontsize=8)
+    ax.set_title(f"평균 ± 신뢰구간({confidence_level}%)", fontsize=8)
     ax.tick_params(axis='x', labelsize=8)
     ax.tick_params(axis='y', labelsize=8)
     
