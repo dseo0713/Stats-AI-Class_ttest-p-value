@@ -85,6 +85,12 @@ st.markdown("""
     font-weight: bold;
     /* 텍스트가 잘리는 것을 방지 */
     overflow: visible !important; 
+    /* 테스트용: 버튼 배경을 잠시 파란색으로 설정하여 영역 확인 */
+    /* background-color: #2196F3 !important; */ 
+    
+    /* 핵심 수정: 버튼의 불투명도를 강제로 1로 설정 */
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* 2. 버튼 내부의 텍스트 요소 (p)를 타겟팅하여 가시성 확보 */
@@ -94,10 +100,11 @@ st.markdown("""
     line-height: 1 !important;
     margin: 0 !important; 
     padding: 0 !important;
+    transform: translateY(-5px) !important;
     
-    /* 핵심 수정: 텍스트를 수직으로 아래로 이동 (margin-top 대신 transform 사용) */
-    /* 텍스트의 수직 중앙 정렬을 위해 텍스트 자체를 50%만큼 위로 이동 */
-    transform: translateY(-5px) !important; 
+    /* 핵심 수정: 텍스트 요소의 불투명도를 강제로 1로 설정 */
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* 3. Streamlit이 텍스트를 감싸는 span 태그를 타겟팅하여 가시성 확보 */
@@ -108,9 +115,11 @@ st.markdown("""
     margin: 0 !important; 
     padding: 0 !important;
     display: block !important;
-    
-    /* 핵심 수정: span 텍스트를 수직으로 아래로 이동 (margin-top 대신 transform 사용) */
     transform: translateY(-5px) !important;
+    
+    /* 핵심 수정: span 요소의 불투명도를 강제로 1로 설정 */
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 
