@@ -148,7 +148,7 @@ col1, col2, col3 = st.sidebar.columns([1, 2, 1])
 
 # "-" 버튼 로직
 with col1:
-    if st.button("-", key="alpha_minus"):
+    if st.button("<", key="alpha_minus"):
         if st.session_state.alpha_index > 0:
             st.session_state.alpha_index -= 1
 
@@ -158,7 +158,7 @@ with col2:
 
 # "+" 버튼 로직
 with col3:
-    if st.button("+", key="alpha_plus"):
+    if st.button(">", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
             st.session_state.alpha_index += 1
 
