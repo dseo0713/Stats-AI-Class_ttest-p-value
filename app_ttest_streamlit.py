@@ -81,7 +81,7 @@ st.markdown("""
     line-height: 1;
     display: flex;
     justify-content: center;
-    align-items: low;
+    align-items: center;
     font-weight: bold;
     /* 텍스트가 잘리는 것을 방지 */
     overflow: visible !important; 
@@ -98,7 +98,7 @@ st.markdown("""
     padding: 0 !important;
     display: block !important;
     /* 텍스트를 위로 살짝 이동시켜 수직 중앙에 맞춤 */
-    transform: translateY(10px) !important; 
+    transform: translateY(3px) !important; 
 }
 
 
