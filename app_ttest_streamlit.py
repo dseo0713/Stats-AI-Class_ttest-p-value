@@ -98,7 +98,7 @@ st.markdown("""
     padding: 0 !important;
     display: block !important;
     /* 텍스트를 위로 살짝 이동시켜 수직 중앙에 맞춤 */
-    transform: translateY(-5px) !important; 
+    transform: translateY(10px) !important; 
 }
 
 
