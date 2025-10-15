@@ -80,11 +80,11 @@ if 'alpha_index' not in st.session_state:
 st.sidebar.write("유의수준 α")
 col1, col2, col3 = st.sidebar.columns([1, 2, 1])
 with col1:
-    if st.button("-", key="alpha_minus"):
+    if st.button("−", key="alpha_minus"):
         if st.session_state.alpha_index > 0:
             st.session_state.alpha_index -= 1
 with col2:
-    st.write(f"<div style='text-align: center;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align: center; padding-top: 5px;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
 with col3:
     if st.button("+", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
@@ -96,7 +96,7 @@ show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
 
 # 1) Upload
 st.subheader("1) 데이터 업로드")
-uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["csv","xlsx","xls"])
+uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["xlsx","xls"])
 st.markdown("""
 **유의사항**
 1. 첫 row (header) 그룹명
