@@ -127,7 +127,9 @@ col1, col2, col3 = st.sidebar.columns([1, 2, 1])
 
 # "<" 버튼 로직 (왼쪽)
 with col1:
-    if st.button("<", key="alpha_minus"):
+    # 텍스트 대신 HTML 엔티티를 사용하여 Streamlit의 텍스트 숨김 문제를 우회합니다.
+    # &lt;는 < 기호를 나타냅니다.
+    if st.button(" &lt; ", key="alpha_minus"):
         if st.session_state.alpha_index > 0:
             st.session_state.alpha_index -= 1
 
@@ -137,7 +139,9 @@ with col2:
 
 # ">" 버튼 로직 (오른쪽)
 with col3:
-    if st.button(">", key="alpha_plus"):
+    # 텍스트 대신 HTML 엔티티를 사용하여 Streamlit의 텍스트 숨김 문제를 우회합니다.
+    # &gt;는 > 기호를 나타냅니다.
+    if st.button(" &gt; ", key="alpha_plus"):
         if st.session_state.alpha_index < len(alpha_options) - 1:
             st.session_state.alpha_index += 1
 
