@@ -86,13 +86,16 @@ st.markdown("""
     /* 텍스트 색상은 내부 요소에서 강제 지정 */
 }
 
-/* 2. 버튼 내부의 텍스트 요소 (p)를 타겟팅하여 가시성 확보 (이전 버전의 핵심) */
+/* 2. 버튼 내부의 텍스트 요소 (p)를 타겟팅하여 가시성 확보 */
 [data-testid="stSidebar"] button > div > p {
     color: red !important;
     font-size: 20px !important; 
     line-height: 1 !important;
     margin: 0 !important; 
     padding: 0 !important;
+    
+    /* 핵심 수정: 텍스트를 수직으로 아래로 이동시켜 버튼 중앙에 보이게 함 */
+    margin-top: 5px !important;
 }
 
 /* 3. 새로운 추가: Streamlit이 텍스트를 감싸는 span 태그를 타겟팅하여 가시성 확보 */
@@ -104,6 +107,9 @@ st.markdown("""
     padding: 0 !important;
     /* 텍스트가 잘리는 것을 막는 중요한 속성 */
     display: block !important;
+    
+    /* 핵심 수정: span 텍스트를 수직으로 아래로 이동시켜 버튼 중앙에 보이게 함 */
+    margin-top: 5px !important;
 }
 
 
@@ -114,6 +120,7 @@ st.markdown("""
     justify-content: center;
     height: 100%;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
