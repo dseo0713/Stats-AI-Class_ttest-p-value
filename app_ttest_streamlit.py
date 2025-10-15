@@ -134,8 +134,8 @@ with col1:
 
 # 유의수준 값 표시
 with col2:
-    st.write(f"<div style='text-align: center; font-weight: 600; font-size: 1.1rem;'>{alpha_options[st.session_state.alpha_index]}</div>", unsafe_allow_html=True)
-
+    show_plots = st.sidebar.checkbox("요약 그래프(평균±CI)", value=True)
+    
 # ">" 버튼 로직 (오른쪽)
 with col3:
     # 텍스트 대신 HTML 엔티티를 사용하여 Streamlit의 텍스트 숨김 문제를 우회합니다.
@@ -232,9 +232,10 @@ y = data.loc[data["group"]==g2, "value"].to_numpy(dtype=float)
 st.subheader("2) 독립변수(집단) 기술통계")
 
 def descriptives(arr):
-    n = len(arr)
-    mean = float(np.mean(arr)) if n>0 else np.nan
-    sd = float(np.std(arr, ddof=1)) if n>1 else np.nan
+    confidence_level = int((1 - alpha) * 100)
+tcrit = stats.t.ppf(1 - alpha/2, df) if "양측" in tail else stats.t.ppf(1 - alpha, df)
+ci_low = mean_diff - tcrit*se_diff
+ci_high = mean_diff + tcrit*se_diff
     var = float(np.var(arr, ddof=1)) if n>1 else np.nan
     return n, mean, sd, var
 
@@ -243,7 +244,7 @@ n2, m2, sd2, var2 = descriptives(y)
 
 desc_df = pd.DataFrame({
     "집단": [g1, g2],
-    "사례수(n)": [n1, n2],
+   st.write(f"신뢰구간 ({confidence_level}%): [{ci_low:.2f}, {ci_high:.2f}]")
     "평균": [m1, m2],
     "표준편차": [sd1, sd2],
     "분산": [var1, var2],
@@ -258,13 +259,14 @@ styled_desc = (
     desc_df.style
         .set_properties(**{"text-align": "center"})
         .set_table_styles([{"selector": "th", "props": [("text-align", "center")]}])
-        .format({"평균": "{:.2f}", "표준편차": "{:.2f}", "분산": "{:.2f}"})
+report = (
+    f"<b style='color:red;'>{tail_txt} 기준으로 {g1}의 평균({m1:.2f})과 "
+    f"{g2}의 평균({m2:.2f})을 비교한 결과, "
+    f"t={tstat:.2f}, df={df:.0f}, p={p_val:.4f}로 "
+    f"{'통계적으로 유의미한 차이가 있었다' if p_val < alpha else '유의미한 차이가 없었다'}."
+    f" 평균차({g1}-{g2})={mean_diff:.2f}, {confidence_level}% CI [{ci_low:.2f}, {ci_high:.2f}] 이다.</b>"
 )
-st.markdown(styled_desc.to_html(), unsafe_allow_html=True)
 
-# 3) t-test (equal variance assumed)
-st.subheader("3) 검증 결과")
-equal_var = True
 
 tstat, p_two = stats.ttest_ind(x, y, equal_var=equal_var, alternative="two-sided")
 
@@ -289,7 +291,7 @@ def sig_stars(p):
 stars = sig_stars(p_val)
 
 df = n1 + n2 - 2
-
+ax.set_title(f"평균 ± 신뢰구간({confidence_level}%)", fontsize=8)
 mean_diff = m1 - m2
 sp2 = ((n1-1)*var1 + (n2-1)*var2) / (n1+n2-2) if df>0 else np.nan
 se1 = np.sqrt(var1/n1); se2 = np.sqrt(var2/n2)
