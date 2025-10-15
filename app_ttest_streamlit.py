@@ -67,6 +67,17 @@ def ensure_korean_font():
 ensure_korean_font()
 
 st.title("DW SEO] 독립표본 t-검증 프로그램")
+st.markdown("""
+    <style>
+    .block-container {
+        padding-top: 2rem !important;
+    }
+    h1 {
+        margin-bottom: 1rem !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 
 # Sidebar
 st.markdown("""
