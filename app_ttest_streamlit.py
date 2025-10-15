@@ -152,17 +152,23 @@ show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
 
 
 # 1) Upload
-
-
 st.markdown("""
 <style>
+/* 1. "유의사항" 텍스트를 감싸는 div를 타겟팅하여 리스트와의 간격 조정 */
+/* st.markdown으로 생성된 마크다운 텍스트를 감싸는 div를 타겟팅합니다. */
 div.stMarkdown:has(p > strong:contains("유의사항")) {
-    margin-bottom: -10px; /* 음수 마진을 주어 다음 요소와의 간격을 줄입니다. (값 조정 가능) */
+    margin-bottom: -10px; /* 음수 마진을 주어 다음 요소(리스트)와의 간격을 줄입니다. */
 }
 
-/* 유의사항의 리스트 (ul/ol)에 대한 상단 마진을 줄입니다. */
+/* 2. 유의사항 리스트 (ul/ol) 자체의 상단 마진을 제거하여 "유의사항" 제목과 밀착시킵니다. */
 div.stMarkdown ul {
-    margin-top: 5px; /* 리스트와 유의사항 제목 사이의 간격을 줄입니다. */
+    margin-top: 0px; /* 리스트와 유의사항 제목 사이의 간격을 최소화합니다. */
+}
+
+/* 3. 유의사항 텍스트 (***유의사항**) 바로 밑의 마진을 제거합니다. */
+/* st.markdown 내부의 <p> 태그를 타겟팅합니다. */
+div.stMarkdown p {
+    margin-bottom: 0px; /* 단락 아래의 기본 여백을 제거하여 리스트와 더욱 밀착 */
 }
 </style>
 """, unsafe_allow_html=True)
