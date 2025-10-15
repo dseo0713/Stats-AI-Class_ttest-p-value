@@ -136,7 +136,7 @@ show_plots = st.sidebar.checkbox("요약 그래프(평균±95% CI)", value=True)
 
 # 1) Upload
 st.subheader("1) 데이터 업로드")
-uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["csv","xlsx","xls"])
+uploaded = st.file_uploader("Excel(.xlsx/.xls) 업로드", type=["xlsx","xls"])
 st.markdown("""
 **유의사항**
 1. 첫 row (header) 그룹명
